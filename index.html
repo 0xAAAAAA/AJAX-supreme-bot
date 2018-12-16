@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Superior Bot</title>
+
+      <!-- css -->
+      <link rel="stylesheet" href="style/main.css">
+
+      <!-- js -->
+      <script src="jquery-3.3.1.min.js"></script>
+      <script src="js/main.js"></script>
+      <script type="text/javascript" src="js/particles.min.js">
+      </script>
+
+   </head>
+   <body>
+      <nav>
+         <img class="logo" src="images/superior-logo.png">
+      </nav>
+
+      <div class="wrapper">
+
+         <!-- <div class="section" style="position:relative">
+            <div id="log-container" class="log" style="display:inline-block; background:#fff;border:1px solid #ddd; border-radius:5px; overflow-y:scroll; padding:6px 0 0 6px">
+            </div>
+            <span id="clear-log" style="width:150px; display:block; font-family:Courier; font-size:11px; color:#888; cursor:pointer;">Clear log</span>
+         </div> -->
+
+         <div class="section" style="height:230px">
+
+            <div style="display:inline-block; float:left">
+               <h1 class="title">Settings</h1>
+               <label class="radio-btn-container" for="mode-1">
+                  Checkout in the background
+                  <input id="mode-1" type="radio" name="mode">
+                  <span class="checkmark"></span>
+               </label>
+               <label class="radio-btn-container" for="mode-2">
+                  Checkout in a new tab (the form will autofill)
+                  <input id="mode-2" type="radio" name="mode">
+                  <span class="checkmark"></span>
+               </label>
+
+               <label for="add-to-cart-delay">Delay after each "add to cart"</label><br>
+               <input class="text-input" id="add-to-cart-delay" type="text" placeholder="in seconds"><br>
+
+               <label for="checkout-delay">Delay before checkout</label><br>
+               <input class="text-input" id="checkout-delay" type="text" placeholder="in seconds"><br>
+
+               <div class="btn" id="save-settings">
+                  Save
+               </div>
+            </div>
+
+            <div style="display:inline-block; float:left; margin:95px 0 0 -54px">
+               <label for="stock-refresh-rate">Stock refresh rate</label><br>
+               <input class="text-input" id="stock-refresh-rate" type="text" placeholder="in seconds"><br>
+
+               <label for="drop-refresh-rate">Drop refresh rate</label><br>
+               <input class="text-input" id="drop-refresh-rate" type="text" placeholder="in seconds"><br>
+            </div>
+
+            <div style="float:right; width:48%; height:180px;">
+               <h1 class="title" style="display">Log</h1>
+               <div id="log-container" class="log">
+               </div>
+               <span id="clear-log" style="width:150px; display:block; font-family:Courier; font-size:11px; color:#888; cursor:pointer;">Clear log</span>
+            </div>
+
+
+         </div>
+
+         <div class="section">
+            <h1 class="title">Drop items</h1>
+            <h2 class="description">
+               <b>*</b>Keywords, categories and style priority are not case sensitive.<br>
+               <b>*</b>If at least one of the specified keywords is met in an item's name, bot will assume that's the target item.<br>
+               <b>*</b>You can specify up to 3 categories in which the target item might appear.<br>
+               <b>*</b>The first [size, color] pair in style priority has the highest priority, the last one, accordingly the lowest.<br>
+               <b>*</b>If the item that you want to cop might not have a size (e.g. a hat), then type N/A instead of size.
+            </h2>
+            <table id="drop-items-table">
+               <thead>
+                  <tr>
+                     <th class="table-padding">Keywords</th>
+                     <th class="table-padding">Categories</th>
+                     <th class="table-padding">Style priority</th>
+                     <th style="background:transparent"></th>
+                  </tr>
+               </thead>
+
+               <tbody>
+
+               </tbody>
+
+            </table>
+            <div id="add-drop-item" class="btn item-action-btn">
+               Add new item
+            </div>
+            <select id="select-drop-date" style="margin: 5px 0 0 0; width: 186px; background: #fff; height: 30px; padding: 0 0 0 5px; border: 1px solid #ddd; border-radius: 5px;">
+            </select>
+            <div id="start-drops" class="btn btn-red" style="margin:5px 0 0 0">
+               Activate
+            </div>
+            <div id="stop-drops" class="btn" style="margin:5px 0 0 0">
+               Deactivate
+            </div>
+         </div>
+
+         <div class="section">
+               <h1 class="title">Stock items</h1>
+               <h2 class="description">
+                  <b>*</b>Keywords and style priority are not case sensitive.<br>
+                  <b>*</b>If at least one of the specified keywords is met in an item's name, bot will assume that's the target item.<br>
+                  <b>*</b>The first [size, color] pair in style priority has the highest priority, the last one, accordingly the lowest.<br>
+                  <b>*</b>If the item that you want to cop might not have a size (e.g. a hat), then type N/A instead of size.<br>
+
+               </h2>
+               <table id="stock-items-table">
+                  <thead>
+                     <tr>
+                        <th class="table-padding">Keywords</th>
+                        <th class="table-padding">Style priority</th>
+                        <th style="background:transparent"></th>
+                     </tr>
+                  </thead>
+
+                  <tbody>
+
+                  </tbody>
+
+               </table>
+               <div id="add-stock-item" class="btn item-action-btn">
+                  Add new item
+               </div>
+               <div id="start-stocks" class="btn btn-red" style="margin: 5px 0 0 0">
+                  Start
+               </div>
+               <div id="stop-stocks" class="btn" style="margin: 5px 0 0 0">
+                  Stop
+               </div>
+         </div>
+
+         <div class="section" style="border-bottom:none">
+            <div class="binfo-container">
+               <div class="binfo-order">
+                  <h1 class="title">Billing/shipping information</h1>
+
+                  <div class="binfo-1 binfo">
+                     <label for="order[billing_name]">Full name</label>
+                     <input id="order[billing_name]" type="text">
+
+                     <label for="order[email]">Email</label>
+                     <input id="order[email]" type="text">
+
+                     <label for="order[tel]">Tel</label>
+                     <input id="order[tel]" type="text">
+                  </div>
+
+                  <div class="binfo-2 binfo">
+                     <label for="order[billing_address]">Address</label>
+                     <input id="order[billing_address]" type="text">
+
+                     <label for="order[billing_address_2]">Address 2</label>
+                     <input id="order[billing_address_2]" type="text">
+
+                     <label for="order[billing_address_3]">Address 3</label>
+                     <input id="order[billing_address_3]" type="text">
+                  </div>
+
+                  <div class="binfo-3 binfo">
+                     <label for="order[billing_city]">City</label>
+                     <input id="order[billing_city]" type="text">
+
+                     <label for="order[billing_zip]">Postcode</label>
+                     <input id="order[billing_zip]" type="text">
+
+                     <label for="order[billing_country]">Country</label>
+                     <select id="order[billing_country]">
+                        <option value="GB">UK</option>
+                        <option value="NB">UK (N. IRELAND)</option>
+                        <option value="">-</option>
+                        <option value="AT">AUSTRIA</option>
+                        <option value="BY">BELARUS</option>
+                        <option value="BE">BELGIUM</option>
+                        <option value="BG">BULGARIA</option>
+                        <option value="HR">CROATIA</option>
+                        <option value="CZ">CZECH REPUBLIC</option>
+                        <option value="DK">DENMARK</option>
+                        <option value="EE">ESTONIA</option>
+                        <option value="FI">FINLAND</option>
+                        <option value="FR">FRANCE</option>
+                        <option value="DE">GERMANY</option>
+                        <option value="GR">GREECE</option>
+                        <option value="HU">HUNGARY</option>
+                        <option value="IS">ICELAND</option>
+                        <option value="IE">IRELAND</option>
+                        <option value="IT">ITALY</option>
+                        <option value="LV">LATVIA</option>
+                        <option value="LT">LITHUANIA</option>
+                        <option value="LU">LUXEMBOURG</option>
+                        <option value="MC">MONACO</option>
+                        <option value="NL">NETHERLANDS</option>
+                        <option value="NO">NORWAY</option>
+                        <option value="PL">POLAND</option>
+                        <option value="PT">PORTUGAL</option>
+                        <option value="RO">ROMANIA</option>
+                        <option value="RU">RUSSIA</option>
+                        <option value="SK">SLOVAKIA</option>
+                        <option value="SI">SLOVENIA</option>
+                        <option value="ES">SPAIN</option>
+                        <option value="SE">SWEDEN</option>
+                        <option value="CH">SWITZERLAND</option>
+                        <option value="TR">TURKEY</option>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="binfo-card">
+                  <h1 class="title">Credit card information</h1>
+
+                  <div class="binfo-4 binfo">
+                     <label for="credit_card[type]">&nbsp;</label>
+                     <select id="credit_card[type]">
+                        <option value="visa">Visa</option>
+                        <option value="american_express">American Express</option>
+                        <option value="master">Mastercard</option>
+                        <option value="solo">Solo</option>
+                        <option value="paypal">PayPal</option>
+                     </select>
+
+                     <input id="credit_card[cnb]" type="text" placeholder="Number" maxlength="19">
+
+                     <label for="credit_card[month]"></label>
+                     <select style="width:50px; display:inline-block;" id="credit_card[month]">
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option selected="selected" value="11">11</option>
+                        <option value="12">12</option>
+                     </select>
+
+                     <label for="credit_card[year]"></label>
+                     <select style="width:70px; display:inline-block;" id="credit_card[year]">
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                     </select>
+
+                     <input style="width:40px; display:inline-block;" id="credit_card[vval]" type="text" placeholder="CVV" maxlength="3">
+                  </div>
+               </div>
+            </div>
+            <div id="save-binfo" class="btn binfo-action-btn">
+               Save
+            </div>
+         </div>
+
+      </div>
+
+   </body>
+</html>

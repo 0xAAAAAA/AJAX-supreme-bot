@@ -1,0 +1,34 @@
+{
+   "name": "Superior Supreme Bot",
+   "version": "1.6",
+   "description": "Bot for copping Supreme drops and restocks",
+   "permissions": [
+      "tabs",
+      "https://www.supremenewyork.com/*",
+      "http://www.supremenewyork.com/*",
+      "https://www.supremecommunity.com/restocks/eu/",
+      "http://www.<URL>/drops.json"
+   ],
+   "icons": {
+      "128": "images/icons/icon128.png",
+      "48": "images/icons/icon48.png",
+      "16": "images/icons/icon16.png"
+   },
+   "browser_action": {
+      "default_icon": "images/icons/icon16.png",
+
+      "default_title": "Superior Bot"
+   },
+   "background": {
+      "scripts": ["jquery-3.3.1.min.js", "background.js"]
+   },
+   "content_scripts": [
+      {
+         "matches": [
+            "https://www.supremenewyork.com/checkout"
+         ],
+         "js": ["content.js"]
+      }
+   ],
+   "manifest_version": 2
+}

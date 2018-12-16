@@ -1,0 +1,357 @@
+body {
+   margin:0;
+   padding:0;
+   background-color: #fff;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+input:focus {
+   outline: none;
+}
+select:focus {
+   outline: none;
+}
+
+nav {
+   width: 900px;
+   height: 50px;
+   background: #fff;
+   margin: 50px auto 30px auto;
+}
+nav .logo {
+   height: 24px;
+   display: block;
+   margin: 0 auto;;
+   padding: 10px;
+   background: #fff;
+   border:1px dotted #ccc;
+}
+
+.wrapper {
+   background: #f3f3f3;
+   width: 900px;
+   margin: 0 auto 50px auto;
+   border-radius: 0px;
+   padding: 0;
+   border: 1px dotted #999999;
+
+}
+
+table {
+   width: 100%;
+   margin: 0 0 10px 0;
+}
+table th {
+   font-size: 13px;
+   text-align: left;
+   background: #000;
+   color: #fff;
+   font-family: Courier;
+   letter-spacing: 0;
+   height: 30px;
+   padding-left: 15px;
+   font-weight: normal;
+}
+table td {
+   font-size: 12px;
+   height: 30px;
+   background: #fff;
+   border: 1px solid #ddd;
+}
+
+.section {
+   border-bottom: 1px dotted #999999;
+   padding: 30px 30px 30px 30px;
+}
+
+.table-padding {
+   padding:0 0 0 15px;
+}
+
+.binfo-container {
+   margin:0;
+   padding:0;
+   height: 200px;
+}
+.binfo {
+   width:190px;
+   float:left;
+   padding: 0;
+   margin: 0 20px 0 0;
+}
+.binfo-container .binfo-order {
+   float: left;
+}
+.binfo-container .binfo-card {
+   float: left;
+}
+
+.text-input, .binfo-container input {
+   margin: 3px 0 5px 0;
+   width: 180px;
+   background: #fff;
+   height: 28px;
+   padding: 0 0 0 5px;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+}
+
+label {
+   color:#555;
+}
+
+.binfo-container select {
+   margin: 3px 0 5px 0;
+   width: 190px;
+   background: #fff;
+   height: 30px;
+   padding: 0 0 0 5px;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+}
+.binfo-container .binfo-4  input{
+   margin-top:19px !important;
+}
+
+.btn {
+   background: #000;
+   text-align: center;
+   cursor: pointer;
+   font-family: Courier;
+   letter-spacing: 0;
+   border:1px solid #e1e1e1;
+   color:#fff;
+   height:22px;
+   padding:9px 0 0 0;
+   border-radius: 5px;
+   width: 185px;
+}
+.btn:hover {
+   transition: 0.2s;
+   background: #40393a;
+}
+.btn-red {
+   background: #ff0000;
+}
+.btn-red:hover {
+   background: #db0000;
+}
+
+
+.binfo-action-btn {
+}
+
+.table-input {
+   border:none;
+   background: transparent;
+   outline:none;
+   height:100%;
+   width:100%;
+   cursor: pointer;
+   background: url('../images/glyphicons/pencil.png') no-repeat 96% 50%;
+   background-size: 14px 14px;
+   border-radius: 0;
+   padding: 0 0 0 0;
+}
+.table-select {
+   border:none;
+   outline:none;
+   background: transparent;
+   height:100%;
+   width:100%;
+   cursor: pointer;
+   border-radius: 0;
+   padding: 0 0 0 15px;
+
+   -moz-appearance: none;
+   -webkit-appearance: none;
+   -webkit-border-radius: 0px;
+   appearance: none;
+   outline-width: 0;
+   background: url('../images/glyphicons/arrow.png') no-repeat 92% 50%;
+   background-size: 13px 13px;
+}
+
+.table-input-td {
+   padding: 0 0 0 15px;
+   cursor: pointer;
+}
+
+.latest-droplist-container {
+   width:50%;
+   height: 200px;
+   overflow-y: scroll;
+   background: #fff;
+   display: inline-block;
+   border: 1px solid #ddd;
+}
+.droplist-item {
+   width: 100%;
+   height: 40px;
+   margin: 0 0 0 0;
+   background: #fff;
+   border-bottom: 1px solid #ddd;
+}
+.droplist-item img {
+   width: 30px;
+   height:30px;
+   margin:5px;
+   float: left;
+}
+.droplist-item h1 {
+   font-size:12px;
+   margin:4px 0 0 5px;
+   padding:0;
+   width: 300px;
+   font-weight: normal;
+   float: left;
+   height: 15px;
+   overflow: hidden;
+}
+.droplist-item h2 {
+   font-size:12px;
+   margin:0px 0 0 5px;
+   padding:0;
+   float:left;
+   width:200px;
+   font-weight: normal;
+   font-style: italic;
+   float: left;
+}
+.droplist-item .droplist-item-add-btn {
+   display: inline-block;
+   width: 50px;
+   height: 20px;
+   margin: 6.5px 0 6.5px 0;
+   text-align: center;
+   font-family: Courier;
+   letter-spacing: 1px;
+   padding: 7px 0 0 0;
+   color:#fff;
+   background: #000;
+   border-radius: 5px;
+}
+.droplist-item .droplist-item-add-btn:hover {
+   cursor: pointer;
+   background: #40393a;
+}
+
+.item-action-btn {
+   margin: 4px 0 0 0;
+   display: block;
+}
+
+.rm-item-btn {
+   cursor: pointer !important;
+   background: #fff !important;
+}
+.rm-item-btn:hover {
+   background: #f9f9f9 !important;
+}
+
+.title {
+   font-size:13px;
+   color:#444;
+   font-weight: bold;
+}
+.description {
+   font-size:14px;
+   font-weight:normal
+}
+
+.log {
+   background:#fff;
+   border:1px solid #ddd;
+   border-radius:5px;
+   overflow-y:scroll;
+   padding:6px 0 0 6px;
+   margin: 0 0 3px 0;
+   width: 100%;
+   height: 100%;
+   display: inline-block;
+}
+
+
+/* radio buttons */
+
+/* The container */
+.radio-btn-container {
+    display: block;
+    position: relative;
+    padding: 2px 0 0 27px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radio-btn-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #000;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radio-btn-container:hover input ~ .checkmark {
+    background-color: #000;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio-btn-container input:checked ~ .checkmark {
+    background-color: #000;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio-btn-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio-btn-container .checkmark:after {
+ 	top: 6px;
+	left: 6px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #fff;
+}
