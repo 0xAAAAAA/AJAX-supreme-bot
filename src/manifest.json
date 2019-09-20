@@ -1,13 +1,12 @@
 {
    "name": "Superior Supreme Bot",
-   "version": "1.6",
+   "version": "1.7",
    "description": "Bot for copping Supreme drops and restocks",
    "permissions": [
       "tabs",
       "https://www.supremenewyork.com/*",
       "http://www.supremenewyork.com/*",
-      "https://www.supremecommunity.com/restocks/eu/",
-      "http://www.<URL>/drops.json"
+      "https://www.supremecommunity.com/restocks/eu/"
    ],
    "icons": {
       "128": "images/icons/icon128.png",

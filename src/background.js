@@ -1,9 +1,14 @@
 /* "Superior Supreme Bot" */
 
+const DROP_DATES = {
+    'test': '1568930101176'
+}
+
 chrome.browserAction.onClicked.addListener(function() {
    chrome.tabs.create({
       'url':chrome.runtime.getURL('index.html')
    });
+   return true;
 });
 
 class Log {
@@ -29,6 +34,7 @@ class Log {
       return '[' + hours + ':' + minutes + '] ';
    }
 }
+
 
 class Item {
    constructor() {
@@ -117,6 +123,7 @@ class Item {
    }
 }
 
+
 class Style {
    constructor(color, size, actionUrl) {
       this.color = color;
@@ -125,12 +132,14 @@ class Style {
    }
 }
 
+
 class Size {
    constructor(name, id) {
       this.name = name;
       this.id = id;
    }
 }
+
 
 class Color {
    constructor(name, id, isSoldout) {
@@ -139,6 +148,7 @@ class Color {
       this.isSoldout = isSoldout;
    }
 }
+
 
 class Profile {
    constructor() {
@@ -189,16 +199,22 @@ class Profile {
       let self = this;
 
       let allCatNames = new Array();
-      self.dropItems.forEach((x, i) => allCatNames.concat(x.cats));
+
+      self.dropItems.forEach(x => {
+        for (let cat of x.cats) {
+          allCatNames.push(cat);
+        }
+      });
 
       let uniqueCatNames = allCatNames.filter((x, i) => allCatNames.indexOf(x) == i);
 
       Promise.all(uniqueCatNames.map(name => promiseDocument('https://www.supremenewyork.com/shop/all'+'/'+name)))
       .then(catDocs => {
+
          // Collect available items in the category documents
          let foundItems = {};
-         catNames.forEach((x, i) => {
-            foundItems[catNames[i]] = self.findItemsInCatDoc(catDocs[i])
+         uniqueCatNames.forEach((x, i) => {
+            foundItems[x] = self.findItemsInCatDoc(catDocs[i])
          });
 
          // For each item of Profile.dropItems attempt to find appropriate item
@@ -234,17 +250,15 @@ class Profile {
                         // If found such name, then promise documents
                         // of urls related to it
                         if (name.toLowerCase().includes(keyword.toLowerCase())) {
-
                            relevantItems[cat][name].forEach(url => {
                               promisedDocs.push(promiseDocument(url).then(doc => self.dropItems[i].addDocument(doc)));
                            });
-                           // := break from all loops
-                           return true;
+                           // break from all loops
+                           return;
                         }
                      }
                   }
                }
-               return false;
             }
             findItem();
          }
@@ -261,8 +275,6 @@ class Profile {
       .then(() => self.fillCart(self.dropItems), () => onNotFound());
 
       function onNotFound() {
-         // Time period for which bot should continue
-         // "refreshing" the page
          if (new Date().getTime() - self.dropTimestamp > 40000) {
             self.dropTimestamp = null;
             LOG.push('Stopped drops.');
@@ -346,7 +358,6 @@ class Profile {
       let code = '';
       Object.keys(self.billingInfo).forEach(key => {
          code += 'document.getElementsByName("'+key+'")[0].value = "' + self.billingInfo[key] + '";';
-         console.log(key, self.billingInfo[key]);
       });
       code += 'document.getElementById("order_terms").value = "1";';
       chrome.tabs.executeScript(tabId, {code: code});
@@ -607,12 +618,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       } else {}
 
       if (noCategoriesPicked) {
-         LOG.push('You\'ve not picked categories for at lease one drop item.');
+         LOG.push('You\'ve not picked categories for at least one drop item.');
          return;
       } else {}
 
       queryDropDates().then(dates => {
-         if (Object.values(dates).includes(request.epoch)) {
+        let targetEpoch = request.epoch.toString();
+        let existingEpochs = Object.values(dates).map(x => x.toString());
+         if (existingEpochs.includes(targetEpoch)) {
 
             for (let i in PROFILE.items) {
                PROFILE.items[i].cleanUp();
@@ -739,83 +752,22 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
    else if (request.action === 'get-log') {
       sendResponse(LOG.log);
    }
-
 });
 
-// NOTE: This function should return a dictionary, example:
-// {'date_string': epoch, ...}
-// It used to query for the string from superiorbot website
 
-// Tt's up to you where you get the dictionary, it may be even hard-coded
-// (drop dates are not consistent)
 function queryDropDates() {
-   //return {'12-Nov-1999': 123123123};
    return new Promise((resolve, reject) => {
-      let r = new XMLHttpRequest();
-      r.open('GET', 'https://<URL>/drops.json');
-      r.setRequestHeader('Cache-Control', 'no-cache');
-      r.onload = () => {
-         resolve(JSON.parse(r.responseText));
-      }
-      r.send();
+      resolve(DROP_DATES);
+      // let r = new XMLHttpRequest();
+      // r.open('GET', 'http://<url>/drops.json');
+      // r.setRequestHeader('Cache-Control', 'no-cache');
+      // r.onload = () => {
+      //    resolve(JSON.parse(r.responseText));
+      // }
+      // r.send();
    });
 }
 
-function promiseDocument(url) {
-   return new Promise((resolve, reject) => {
-      let r = new XMLHttpRequest();
-      r.open('GET', url);
-      r.onload = function() {
-         resolve($(r.responseText));
-      }
-      r.onerror = () => reject('Network error');
-      r.send();
-   });
-}
-
-function postifyDict(dict) {
-   let result = "";
-   Object.keys(dict).forEach(function(key) {
-      result += key + '=' + dict[key] + '&';
-   });
-   result = result.slice(0, result.length - 1);
-   return result;
-}
-
-// returns Levenshtein distance for two strings
-function strDistance(str1, str2) {
-
-   str1 = Array.from(str1);
-   str2 = Array.from(str2);
-
-   let matrix = new Array(str1.length + 1).fill(null).map(x => new Array(str2.length + 1).fill(null));
-
-   for (let i = 0; i < str1.length + 1; i++) {
-      matrix[i][0] = parseInt(i);
-   }
-   for (let j = 0; j < str2.length + 1; j++) {
-      matrix[0][j] = parseInt(j);
-   }
-   for (let i = 1; i <= str1.length; i++) {
-      for (let j = 1; j <= str2.length; j++) {
-         let notEqual = str1[i - 1] !== str2[j - 1];
-         matrix[i][j] = Math.min(matrix[i][j-1], matrix[i-1][j], matrix[i-1][j-1]) + notEqual;
-      }
-   }
-
-   return matrix[str1.length][str2.length];
-}
-
-function epochToDate(epoch) {
-   let dateStr = new Date(parseInt(epoch)).toString();
-   let dateArray = dateStr.split(' ');
-   let monthName = dateArray[1];
-   let day = dateArray[2];
-   let year = dateArray[3];
-   let time = dateArray[4].split(':');
-   time = time[0] + ':' + time[1];
-   return monthName + ' ' + day + ' ' + year + ' ' + time;
-}
 
 function parseStyles(str) {
    if (str == undefined) return new Array();
@@ -846,6 +798,7 @@ function parseStyles(str) {
    return pairs;
 }
 
+
 function parseKeywords(str) {
    if (str == undefined) return new Array();
 
@@ -853,6 +806,7 @@ function parseKeywords(str) {
    let keywords = str.split(',').filter(x => x !== '');
    return keywords;
 }
+
 
 function parseCats(str) {
    if (str == undefined) return new Array();
@@ -890,6 +844,67 @@ function parseCats(str) {
    }
    return pickedCats;
 }
+
+
+function promiseDocument(url) {
+   return new Promise((resolve, reject) => {
+      let r = new XMLHttpRequest();
+      r.open('GET', url);
+      r.onload = function() {
+         resolve($(r.responseText));
+      }
+      r.onerror = () => reject('Network error');
+      r.send();
+   });
+}
+
+
+function postifyDict(dict) {
+   let result = "";
+   Object.keys(dict).forEach(function(key) {
+      result += key + '=' + dict[key] + '&';
+   });
+   result = result.slice(0, result.length - 1);
+   return result;
+}
+
+
+// returns Levenshtein distance for two strings
+function strDistance(str1, str2) {
+
+   str1 = Array.from(str1);
+   str2 = Array.from(str2);
+
+   let matrix = new Array(str1.length + 1).fill(null).map(x => new Array(str2.length + 1).fill(null));
+
+   for (let i = 0; i < str1.length + 1; i++) {
+      matrix[i][0] = parseInt(i);
+   }
+   for (let j = 0; j < str2.length + 1; j++) {
+      matrix[0][j] = parseInt(j);
+   }
+   for (let i = 1; i <= str1.length; i++) {
+      for (let j = 1; j <= str2.length; j++) {
+         let notEqual = str1[i - 1] !== str2[j - 1];
+         matrix[i][j] = Math.min(matrix[i][j-1], matrix[i-1][j], matrix[i-1][j-1]) + notEqual;
+      }
+   }
+
+   return matrix[str1.length][str2.length];
+}
+
+
+function epochToDate(epoch) {
+   let dateStr = new Date(parseInt(epoch)).toString();
+   let dateArray = dateStr.split(' ');
+   let monthName = dateArray[1];
+   let day = dateArray[2];
+   let year = dateArray[3];
+   let time = dateArray[4].split(':');
+   time = time[0] + ':' + time[1];
+   return monthName + ' ' + day + ' ' + year + ' ' + time;
+}
+
 
 function restrainValue(value, min, max) {
    value = Math.max(value, min);
